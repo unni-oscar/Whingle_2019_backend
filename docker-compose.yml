@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  # Nginx Service
+  web:
+    image: nginx:1.15
+    container_name: ${APP_NAME}_Web
+    volumes:
+      - ./:/var/www/whingle
+      - ./nginx/conf.d:/etc/nginx/conf.d/default.conf
+      - ./nginx/log:/var/log/nginx
+    ports:
+      - 8081:80
+    networks:
+      - app-network
+  # PHP Service
+  app:
+    container_name: ${APP_NAME}_App
+    working_dir: /var/www/whingle
+    build: 
+      context: ./docker/app
+    volumes:
+      - .:/var/www/whingle
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./php/log:/var/log/php
+    networks:
+      - app-network
+  # Mysql Service
+  db:
+    container_name: ${APP_NAME}_DB
+    image: mysql:5.7
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - app-network
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+#sudo docker volume rm $(sudo docker volume ls -qf dangling=true)
+#sudo docker-compose up -d --build nginx mysql
+
+# docker system prune
+# docker container prune
+# docker image prune
+# docker network prune
+# docker volume prune```
