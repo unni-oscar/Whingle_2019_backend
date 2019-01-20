@@ -13,6 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Public Routes
+
+Route::post('login', 'AuthController@login');
+Route::post('register', 'AuthController@register');
+
+//  ‘jwt.auth’ to protect your route
+
+Route::group([
+    'middleware' => 'jwt.auth',
+], function ($router) {
+    Route::post('test', function() {
+        return "I am from protected page";
+    });
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@user');
 });
