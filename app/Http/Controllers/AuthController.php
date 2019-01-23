@@ -37,6 +37,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'status' => 'success',
             'access_token' => $token,
             'token_type'   => 'bearer',
             'expires_in'   => auth()->factory()->getTTL() * 60
@@ -52,10 +53,7 @@ class AuthController extends Controller
                 'msg' => 'Invalid Credentials.'
             ], 400);
         }
-        return response([
-            'status' => 'success',
-            'token' => $token
-        ]);
+        return $this->respondWithToken($token);
 
         // $credentials = request(['email', 'password']);
 
@@ -79,11 +77,14 @@ class AuthController extends Controller
      * They have to relogin to get a new token
      *
      * @param Request $request
+     * @return Json 
      */
-    public function logout(Request $request) {
-        
+    public function logout(Request $request) {        
         auth()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'status' => 'success',
+            'message' => __('messages.auth.logout_success') // 'Successfully logged out'
+        ]);
     }
     public function refresh()
     {
