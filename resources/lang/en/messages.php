@@ -14,7 +14,11 @@ return [
 
     'auth' => [
         'error' => 'These credentials do not match our records.',
-        'logout_success' => 'Successfully logged out.'
+        'logout_success' => 'Successfully logged out.',
+        'token_invalid' => 'Authentication token is invalid',
+        'token_blacklisted' => 'Authentication token is blacklisted',
+        'token_expired' => 'Authentication token has been expired'
+
     ],
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 

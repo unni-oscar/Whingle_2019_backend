@@ -3,7 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Handler extends ExceptionHandler
 {
@@ -46,36 +53,30 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        
-        // if ($exception instanceof Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-		// 	return response()->json(['error' => 'Token has expired'], $exception->getStatusCode());
-		// } elseif ($exception instanceof Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-		// 	return response()->json(['error' => 'Token is invalid'], $exception->getStatusCode());
-		// } elseif ($exception instanceof \Illuminate\Auth\AuthenticationException) {
-		// 	return response()->json(['error' => 'Unauthorized'], 401);
-		// } elseif ($exception instanceof WebsiteTokenMissingException) {
-		// 	return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-        
-        return parent::render($request, $exception);
-        // Handle all the exceptions and return json, if not authorised
-        // if ($exception instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException) {
-        //     switch (get_class($exception->getPrevious())) {
-        //         case \Tymon\JWTAuth\Exceptions\TokenExpiredException::class:
-        //             return response()->json([
-        //                 'status' => 'error',
-        //                 'message' => 'Token has expired'
-        //             ], $exception->getStatusCode());
-        //         case \Tymon\JWTAuth\Exceptions\TokenInvalidException::class:
-        //         case \Tymon\JWTAuth\Exceptions\TokenBlacklistedException::class:
-        //             return response()->json([
-        //                 'status' => 'error',
-        //                 'message' => 'Token is invalid'
-        //             ], $exception->getStatusCode());
-        //         default:
-        //             break;
-        //     }
-        // }
+        // Detect instance
+        if ($exception instanceof UnauthorizedHttpException) {
 
+            // Detect previous instance
+            if ($exception->getPrevious() instanceof TokenExpiredException) {
+                return response()->json([
+                    'status' => 'error', 
+                    'message' => __('messages.auth.token_expired')
+                ], $exception->getStatusCode());
+            }
+            else if ($exception->getPrevious() instanceof TokenInvalidException) {
+                return response()->json([
+                    'status' => 'error', 
+                    'message' => __('messages.auth.token_invalid')
+                ], $exception->getStatusCode());
+            }
+            else if ($exception->getPrevious() instanceof TokenBlacklistedException) {
+                return response()->json([
+                    'status' => 'error', 
+                    'message' => __('messages.auth.token_blacklisted')
+                ], $exception->getStatusCode());
+            }
+        }
+     
+        return parent::render($request, $exception);
     }
 }
