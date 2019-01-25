@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 // Public Routes
 
 Route::post('login', 'AuthController@login');
-Route::post('register', 'AuthController@register');
+Route::post('register', 'AuthController@store');
+Route::get('register', 'AuthController@register');
 
 //  ‘jwt.auth’ to protect your route
 
