@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use App\Http\Requests\RegisterFormRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
@@ -9,10 +9,19 @@ use App\Http\Requests\LoginRequest;
 class AuthController extends Controller
 {
     
+    public function register() {
+        $keyArr = array('created_by', 'gender', 'marital');
+        $whData = wh_arrayToObject($keyArr);
+        //$countries = Country::select('id', 'name')->orderBy('name', 'asc')->get(); 
+        // $religions = Religion::select('id', 'name')->orderBy('name', 'asc')->get(); 
+        // $motherTongues = MotherTongue::select('id', 'name')->orderBy('name', 'asc')->get();  
+        return response()->json(compact('whData'));
+       // return response()->json(compact('countries',  'whData', 'motherTongues'));
 
+    }
 
     // https://medium.com/@hdcompany123/laravel-5-7-and-json-web-tokens-tymon-jwt-auth-d5af05c0659a
-    public function register(Request $request)
+    public function store(RegisterRequest $request)
     {
     //     $user = User::create([
     //         'name' => $request->name,
@@ -84,7 +93,7 @@ class AuthController extends Controller
         auth()->logout();
         return response()->json([
             'status' => 'success',
-            'message' => __('messages.auth.logout_success') // 'Successfully logged out'
+            'message' => __('messages.auth.logout_success')
         ]);
     }
     public function refresh()
