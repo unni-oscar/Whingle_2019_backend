@@ -20,6 +20,8 @@ return [
         'token_expired' => 'Authentication token has been expired'
 
     ],
+    'registration-failed' => 'Your account could not created. Please try again later.',
+    'registration-success' => 'Your account has been created successfully. Please click on the link that has just been sent to your email account to verfiy your email and complete the registration process.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

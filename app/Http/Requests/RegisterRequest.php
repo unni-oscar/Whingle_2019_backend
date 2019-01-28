@@ -28,30 +28,32 @@ class RegisterRequest extends FormRequest
     {
         // Mininum age for registration is 18 years
         $y18 = Carbon::create()->subYear(18)->format('Y/m/d');
+     
         return [
-            // 'created_by' => 'required|gte:1|lte:6',
+            'created_by' => 'required|gte:1|lte:6',
             'name' => 'required|max:40|regex:/[a-zA-Z\s]+$/',
-            // 'dob' => 'required|before:'.$y18,
-            // 'gender' => 'required|in:1,2',
-            //'marital_status' => 'required|in:1,2,3',
+            'dob' => 'required|before:'.$y18,
+            'gender' => 'required|in:1,2',
+            'marital_status' => 'required|in:1,2,3',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|max:30'
         ];
     }
+    
     /**
      * Custom error messages
      * @return array
      */
-    // public function messages() {
-    //     return [
-    //         'created_by.gte' => 'Please make a valid selection',
-    //         'created_by.lte' => 'Please make a valid selection',
-    //         'name.regex' => 'The name field may only contain alphabetic characters as well as spaces.',
-    //         'dob.before' => 'You should be 18 years of age',
-    //         'gender.in' => 'Please select a valid gender',
-    //         'marital_status.in' => 'Please select a valid marital status'
-    //     ];
-    // }
+    public function messages() {
+        return [
+            'created_by.gte' => 'Please make a valid selection',
+            'created_by.lte' => 'Please make a valid selection',
+            'name.regex' => 'The name field may only contain alphabetic characters as well as spaces.',
+            'dob.before' => 'You should be 18 years of age',
+            'gender.in' => 'Please select a valid gender',
+            'marital_status.in' => 'Please select a valid marital status'
+        ];
+    }
     /**
      * @params $validator
      * @return json

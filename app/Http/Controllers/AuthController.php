@@ -1,14 +1,18 @@
 <?php
 namespace App\Http\Controllers;
-use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use App\User;
+use App\Profile;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use Webpatser\Uuid\Uuid;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 class AuthController extends Controller
-{
-    
+{    
     public function register() {
         $keyArr = array('created_by', 'gender', 'marital');
         $whData = wh_arrayToObject($keyArr);
@@ -17,32 +21,46 @@ class AuthController extends Controller
         // $motherTongues = MotherTongue::select('id', 'name')->orderBy('name', 'asc')->get();  
         return response()->json(compact('whData'));
        // return response()->json(compact('countries',  'whData', 'motherTongues'));
-
     }
-
+    
     // https://medium.com/@hdcompany123/laravel-5-7-and-json-web-tokens-tymon-jwt-auth-d5af05c0659a
     public function store(RegisterRequest $request)
     {
-    //     $user = User::create([
-    //         'name' => $request->name,
-    //         'email'    => $request->email,
-    //         'password' => $request->password,
-    //     ]);
+        try{       
+            DB::beginTransaction();
+            $user = new User;
+            $user->email = $request->email;
+            $user->name = $request->name;
+            $user->password = bcrypt($request->password);
+            $user->user_group_id = config('api.user_group.User');
+            $user->activation_token = utf8_encode(Uuid::generate(4));
+            $user->status = config('api.user_status.Pending');
+            $user->save();
 
-    //    $token = auth()->login($user);
+            $profile = new Profile();
+            $profile->name = $request->name;
+            $profile->user_id = $user->id;
+            $profile->secret_id = Uuid::generate(4);
+            $profile->created_by = $request->created_by;
+            $profile->dob = Carbon::parse($request->dob)->toDateTimeString();
+            $profile->marital_status = $request->marital_status;
+            $profile->gender = $request->gender;
+            $profile->save();
+            DB::commit();
 
-    //    return $this->respondWithToken($token);
-
-        //return $request;
-        $user = new User;
-        $user->email = $request->email;
-        $user->name = $request->name;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        return response([
-            'status' => 'success',
-            'data' => $user
-        ], 200);
+            return response([
+                'status' => 'success',
+                'message' =>  __('messages.registration-success'),
+                'data' => $user
+            ], 201);
+        } catch(\Exception $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => 'error',
+                'message' =>  __('messages.registration-failed'), //$e->getMessage() //
+            ], 400);
+        }
+        
     }
     protected function respondWithToken($token)
     {
