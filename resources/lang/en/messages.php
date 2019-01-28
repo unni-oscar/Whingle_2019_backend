@@ -22,6 +22,7 @@ return [
     ],
     'registration-failed' => 'Your account could not created. Please try again later.',
     'registration-success' => 'Your account has been created successfully. Please click on the link that has just been sent to your email account to verfiy your email and complete the registration process.',
+    'login_error' => 'Incorrect email/password entered.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
