@@ -10,6 +10,8 @@ use App\Http\Requests\RegisterRequest;
 use Webpatser\Uuid\Uuid;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\UserVerificationJob;
 
 class AuthController extends Controller
 {    
@@ -47,7 +49,13 @@ class AuthController extends Controller
             $profile->gender = $request->gender;
             $profile->save();
             DB::commit();
-
+            $data = array(
+                'url' => env('APP_URL').'/verify/'.$user->email.'/'.$user->activation_token
+            );
+            
+            $emailJob = (new UserVerificationJob($data))->delay(Carbon::now()->addSeconds(3));
+            dispatch($emailJob);
+             
             return response([
                 'status' => 'success',
                 'message' =>  __('messages.registration-success'),
@@ -91,6 +99,43 @@ class AuthController extends Controller
 
         // return $this->respondWithToken($token);
     }
+
+    /**
+     * User verification
+     * @params $request {email, token}
+     * @return Json 
+     */
+    public function verify(Request $request) 
+    {
+
+        $user = User::where([
+            'email' => $request->email,
+            'activation_token' => $request->token
+        ])->first();
+
+        if($user) {
+        
+            if($user->email_verified_at == null) {
+                $user->email_verified_at = Carbon::now();                
+        
+                if($user->save()) {
+                    $res = array('status' => 'success','message' => __('messages.email_verified_success'));
+                } else {
+                    $res = array('status' => 'error','message' => __('messages.email_verified_failed'));
+                }
+            } else {
+                $res = array('status' => 'success','message' => __('messages.email_already_verified'));
+            }            
+        } else {
+            $res = array('status' => 'error','message' => __('messages.email_verified_error'));
+        }
+        return response([
+            'status' => $res['status'],
+            'message' => $res['message'],
+            'user' => $request
+        ], ($res['status'] == 'error') ? 400 : 200 );
+    }
+
     public function user(Request $request)
     {
         $user = User::find(Auth::user()->id);
