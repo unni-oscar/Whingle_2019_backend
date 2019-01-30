@@ -18,7 +18,9 @@ use Illuminate\Http\Request;
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@store');
 Route::post('verify', 'AuthController@verify');
+Route::post('reset-password', 'AuthController@resetPassword');
 Route::get('register', 'AuthController@register');
+
 
 //  ‘jwt.auth’ to protect your route
 
