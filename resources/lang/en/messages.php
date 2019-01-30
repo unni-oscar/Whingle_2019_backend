@@ -26,8 +26,14 @@ return [
     'email_verified_failed' => 'Sorry, we couldn\'t verify your email. Please try again later',
     'email_already_verified' => 'Your e-mail is already verified. You can now login.',
     'email_verified_error' => 'Sorry your email cannot be identified or invalid verification key found.',
+    
+    'password_reset_success' => 'Your password has been reset successfully. Please check your email for new password',
+    'password_reset_failed' => 'Your password could not be reset. Please try again later',
+    'password_reset_invalid' => 'Sorry, we couldn\'t find your email in our system',
+
     'login_error' => 'Incorrect email/password entered.',
     'email_verification' => 'Email verification',
+    'reset_password' => 'Reset Password',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

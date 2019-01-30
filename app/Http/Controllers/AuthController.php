@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\UserVerificationJob;
+use App\Jobs\ResetPasswordJob;
 
 class AuthController extends Controller
 {    
@@ -133,6 +134,33 @@ class AuthController extends Controller
             'status' => $res['status'],
             'message' => $res['message'],
             'user' => $request
+        ], ($res['status'] == 'error') ? 400 : 200 );
+    }
+
+    /**
+     * @params {String} email
+     * @return Json
+     */
+    public function resetPassword(Request $request)
+    {
+        $user = User::where('email',$request->email )->first();
+        if($user) {
+            $newPassword = str_random(6);
+            $user->password = bcrypt($newPassword);
+            if($user->save()) {
+                $emailJob = (new ResetPasswordJob($newPassword))->delay(Carbon::now()->addSeconds(3));
+                dispatch($emailJob);
+                $res = array('status' => 'success','message' => __('messages.password_reset_success'));
+            } else {
+                $res = array('status' => 'error','message' => __('messages.password_reset_failed'));
+            }
+        } else {
+            $res = array('status' => 'error','message' => __('messages.password_reset_invalid'));
+        }
+        return response([
+            'status' => $res['status'],
+            'message' => $res['message'],
+            'user' => $user
         ], ($res['status'] == 'error') ? 400 : 200 );
     }
 
