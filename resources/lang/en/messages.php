@@ -30,10 +30,15 @@ return [
     'password_reset_success' => 'Your password has been reset successfully. Please check your email for new password',
     'password_reset_failed' => 'Your password could not be reset. Please try again later',
     'password_reset_invalid' => 'Sorry, we couldn\'t find your email in our system',
+    'password_change_success' => 'Your password has been updated successfully.',
+    'password_change_failed' => 'Your password could not be updated. Please try again later',
 
     'login_error' => 'Incorrect email/password entered.',
     'email_verification' => 'Email verification',
     'reset_password' => 'Reset Password',
+    'change_password' => 'Password changed successfully',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+
+    'operation_invalid' => 'Invalid operation found'
 
 ];
