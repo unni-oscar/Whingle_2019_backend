@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\UserVerificationJob;
 use App\Jobs\ResetPasswordJob;
+use App\Jobs\ChangePasswordJob;
+use App\Http\Requests\ChangePasswordRequest;
 
 class AuthController extends Controller
 {    
@@ -156,6 +158,32 @@ class AuthController extends Controller
             }
         } else {
             $res = array('status' => 'error','message' => __('messages.password_reset_invalid'));
+        }
+        return response([
+            'status' => $res['status'],
+            'message' => $res['message'],
+            'user' => $user
+        ], ($res['status'] == 'error') ? 400 : 200 );
+    }
+
+    /**
+     * @params {Object} old/new/confirm password
+     * @return Json
+     */
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $user = User::find(Auth::user()->id);
+        if($user) {            
+            $user->password = bcrypt($request->newPassword);
+            if($user->save()) {
+                $emailJob = (new ChangePasswordJob())->delay(Carbon::now()->addSeconds(3));
+                dispatch($emailJob);
+                $res = array('status' => 'success','message' => __('messages.password_change_success'));
+            } else {
+                $res = array('status' => 'error','message' => __('messages.password_change_failed'));
+            }
+        } else {
+            $res = array('status' => 'error','message' => __('messages.operation_invalid'));
         }
         return response([
             'status' => $res['status'],
