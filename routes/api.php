@@ -35,4 +35,13 @@ Route::group([
     Route::post('me', 'AuthController@user');
     Route::post('change-password', 'AuthController@changePassword');
 
+    Route::get('profile', 'ProfileController@index');
+    Route::post('profile', 'ProfileController@update');
+
+    Route::get('states/{country}', 'CountryController@states');
+    Route::get('cities/{state}', 'StateController@cities');
+    Route::get('castes/{religion}', 'ReligionController@castes');
+
+
+
 });

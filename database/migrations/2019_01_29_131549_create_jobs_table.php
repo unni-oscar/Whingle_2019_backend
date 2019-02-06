@@ -13,7 +13,10 @@ class CreateJobsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('failed_jobs');
         Schema::create('jobs', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            
             $table->bigIncrements('id');
             $table->string('queue')->index();
             $table->longText('payload');
@@ -31,6 +34,9 @@ class CreateJobsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Schema::dropIfExists('jobs');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 }
