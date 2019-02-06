@@ -18,7 +18,7 @@ class CreateProfilesTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->integer('user_id');  // 0 = normal user, 1 = managers, 2 = admin
+            $table->integer('user_id')->unsigned();  // 0 = normal user, 1 = managers, 2 = admin
             $table->string('secret_id', 64)->nullable();
             /*********** Basic Details ***********/     
             $table->tinyInteger('created_by');
@@ -75,6 +75,10 @@ class CreateProfilesTable extends Migration
             $table->string('contact_number', 25)->nullable();
 
             $table->timestamps();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

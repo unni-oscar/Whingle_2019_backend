@@ -26,8 +26,14 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'created_at', 'user_group_id', 'status', 
+        'email_verified_at', 'id', 'activation_token', 'updated_at', 'subscription_id'
     ];
+
+
+    function profile() {
+        return $this->hasOne('App\Profile');
+    }
 
     public function getJWTIdentifier() {
         return $this->getKey();
