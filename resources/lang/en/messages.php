@@ -21,7 +21,7 @@ return [
 
     ],
     'registration-failed' => 'Your account could not created. Please try again later.',
-    'registration-success' => 'You have successfully registeres. An email is sent to you for verification.',
+    'registration-success' => 'You have successfully registered. An email is sent to you for verification.',
     'email_verified_success' => 'Your e-mail is verified. You can now login.',
     'email_verified_failed' => 'Sorry, we couldn\'t verify your email. Please try again later',
     'email_already_verified' => 'Your e-mail is already verified. You can now login.',

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('activation_token',64)->nullable();
-            $table->tinyInteger('status'); // Pending Activation / Active / Deleted / Suspended TODO
+            $table->tinyInteger('status')->default(0); // Pending Activation / Active / Deleted / Suspended TODO
             $table->tinyInteger('subscription_id')->default(0); // 0 = Free Subscription , 1 = Silver, 2=Gold, 3 Platinum
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
