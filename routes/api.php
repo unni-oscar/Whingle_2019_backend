@@ -42,6 +42,7 @@ Route::group([
     Route::get('cities/{state}', 'StateController@cities');
     Route::get('castes/{religion}', 'ReligionController@castes');
 
-
+    Route::get('search', 'SearchController@index');
+    Route::post('search', 'SearchController@filter');
 
 });

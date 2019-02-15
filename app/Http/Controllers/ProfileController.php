@@ -95,8 +95,8 @@ class ProfileController extends Controller
         try {
             $user->profile->update($data);
             return response()->json([
-                'status' => 'success',
-                'message' => 'Profile updated successfully'
+                'status' => __('messages.res.success'),
+                'message' => __('messages.profile_update_success')
             ], 200);
         }  catch (\Exception $e) {
             return response()->json([

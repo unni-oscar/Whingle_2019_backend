@@ -60,14 +60,14 @@ class AuthController extends Controller
             dispatch($emailJob);
              
             return response([
-                'status' => 'success',
+                'status' => __('messages.res.success'),
                 'message' =>  __('messages.registration-success'),
                 'data' => $user
             ], 201);
         } catch(\Exception $e) {
             DB::rollback();
             return response()->json([
-                'status' => 'error',
+                'status' => __('messages.res.error') ,
                 'message' =>  __('messages.registration-failed'), //$e->getMessage() //
             ], 400);
         }
@@ -87,7 +87,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (!$token = JWTAuth::attempt($credentials)) {
             return response([
-                'status' => 'error',
+                'status' => __('messages.res.error'),
                 // 'error' => 'invalid.credentials',
                 'message' => __('messages.login_error')
             ], 400);
@@ -122,15 +122,15 @@ class AuthController extends Controller
                 $user->email_verified_at = Carbon::now();                
         
                 if($user->save()) {
-                    $res = array('status' => 'success','message' => __('messages.email_verified_success'));
+                    $res = array('status' => __('messages.res.success'),'message' => __('messages.email_verified_success'));
                 } else {
-                    $res = array('status' => 'error','message' => __('messages.email_verified_failed'));
+                    $res = array('status' => __('messages.res.error'),'message' => __('messages.email_verified_failed'));
                 }
             } else {
-                $res = array('status' => 'success','message' => __('messages.email_already_verified'));
+                $res = array('status' => __('messages.res.success'),'message' => __('messages.email_already_verified'));
             }            
         } else {
-            $res = array('status' => 'error','message' => __('messages.email_verified_error'));
+            $res = array('status' => __('messages.res.error'),'message' => __('messages.email_verified_error'));
         }
         return response([
             'status' => $res['status'],
@@ -152,18 +152,18 @@ class AuthController extends Controller
             if($user->save()) {
                 $emailJob = (new ResetPasswordJob($newPassword))->delay(Carbon::now()->addSeconds(3));
                 dispatch($emailJob);
-                $res = array('status' => 'success','message' => __('messages.password_reset_success'));
+                $res = array('status' => __('messages.res.success'),'message' => __('messages.password_reset_success'));
             } else {
-                $res = array('status' => 'error','message' => __('messages.password_reset_failed'));
+                $res = array('status' => __('messages.res.error'),'message' => __('messages.password_reset_failed'));
             }
         } else {
-            $res = array('status' => 'error','message' => __('messages.password_reset_invalid'));
+            $res = array('status' => __('messages.res.error'),'message' => __('messages.password_reset_invalid'));
         }
         return response([
             'status' => $res['status'],
             'message' => $res['message'],
             'user' => $user
-        ], ($res['status'] == 'error') ? 400 : 200 );
+        ], ($res['status'] == __('messages.res.error') ) ? 400 : 200 );
     }
 
     /**
