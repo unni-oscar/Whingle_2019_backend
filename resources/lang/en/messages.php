@@ -33,6 +33,8 @@ return [
     'password_change_success' => 'Your password has been updated successfully.',
     'password_change_failed' => 'Your password could not be updated. Please try again later',
 
+    'profile_update_success' => 'Profile updated successfully',
+    
     'login_error' => 'Incorrect email/password entered.',
     'email_verification' => 'Email verification',
     'reset_password' => 'Reset Password',
