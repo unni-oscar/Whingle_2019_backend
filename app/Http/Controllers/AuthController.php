@@ -88,19 +88,14 @@ class AuthController extends Controller
         if (!$token = JWTAuth::attempt($credentials)) {
             return response([
                 'status' => __('messages.res.error'),
-                // 'error' => 'invalid.credentials',
                 'message' => __('messages.login_error')
             ], 400);
         }
+        // Record last login time and ip
+        Auth::user()->last_login_at = Carbon::now()->toDateTimeString();
+        Auth::user()->last_login_ip = $request->getClientIp();
+        Auth::user()->save();
         return $this->respondWithToken($token);
-
-        // $credentials = request(['email', 'password']);
-
-        // if (! $token = auth()->attempt($credentials)) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-
-        // return $this->respondWithToken($token);
     }
 
     /**
