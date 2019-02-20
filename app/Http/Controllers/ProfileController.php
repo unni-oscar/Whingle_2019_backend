@@ -64,10 +64,13 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        return Profile::with(array('country', 'state', 'city', 'religion', 'mother_tongue', 'caste','user' => function($query){
+            $query->select('id', 'last_login_at as online');
+        }))->whereSecretId($request->secret_id)->firstOrFail();
     }
+    
 
     /**
      * Show the form for editing the specified resource.

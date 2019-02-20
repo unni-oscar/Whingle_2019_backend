@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    // protected $visible = ['id', 'name'];
+    protected $visible = ['id', 'name'];
     
     public function profiles()
     {

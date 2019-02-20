@@ -14,6 +14,14 @@ class Profile extends Model
     // protected $fillable = ['name', 'created_by', 'gender', 'has_children', 'dob'];
     protected $guarded = ['id', 'user_id'];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'address', 'contact_number', 'id', 'user_id', 'created_at', 'updated_at'
+    ];
 
     function user() {
         return $this->belongsTo('App\User');

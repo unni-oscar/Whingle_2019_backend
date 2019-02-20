@@ -45,4 +45,6 @@ Route::group([
     Route::get('search', 'SearchController@index');
     Route::post('search', 'SearchController@filter');
 
+    Route::get('show/{secret_id}', 'ProfileController@show');
+
 });
