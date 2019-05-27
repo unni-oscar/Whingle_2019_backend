@@ -41,6 +41,17 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     networks:
       - app-network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - db
+    ports:
+      - '8181:80'
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: secret
+    networks:
+      - app-network
 #Docker Networks
 networks:
   app-network:
