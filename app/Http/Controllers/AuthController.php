@@ -196,6 +196,19 @@ class AuthController extends Controller
         ]);
     }
     /**
+     * Checking if current user has paid membership
+     */
+    public function isPaidSub()
+    {
+        $user = User::find(Auth::user()->id);
+        $data = (0 == $user->subscription_id) ? false : true; 
+            
+        return response([
+            'status' => 'success',
+            'value' => $data
+        ]);
+    }
+    /**
      * Log out
      * Invalidate the token, so user cannot use it anymore
      * They have to relogin to get a new token

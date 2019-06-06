@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Profile extends Model
 {
@@ -28,34 +29,67 @@ class Profile extends Model
     }
     public function country()
     {
-        return $this->belongsTo('App\Country');
+        return $this->belongsTo('App\Country')->withDefault([
+            'name' => 'N/A'
+        ]);;
     }
     public function state()
     {
-        return $this->belongsTo('App\State');
+        return $this->belongsTo('App\State')->withDefault([
+            'name' => 'N/A'
+        ]);;
     }
     public function city()
     {
-        return $this->belongsTo('App\City');
+        return $this->belongsTo('App\City')->withDefault([
+            'name' => 'N/A'
+        ]);;
     }
     public function mother_tongue()
     {
-        return $this->belongsTo('App\MotherTongue');
+        return $this->belongsTo('App\MotherTongue')->withDefault([
+            'name' => 'N/A'
+        ]);;
     }
     public function religion()
     {
-        return $this->belongsTo('App\Religion');
+        return $this->belongsTo('App\Religion')->withDefault([
+            'name' => 'N/A'
+        ]);
     }
     public function caste()
     {
-        return $this->belongsTo('App\Caste');
+        return $this->belongsTo('App\Caste')->withDefault([
+            'name' => 'N/A'
+        ]);;
     }
     public function education()
     {
-        return $this->belongsTo('App\Education');
+        return $this->belongsTo('App\Education')->withDefault([
+            'name' => 'N/A'
+        ]);;
     }
     public function work()
     {
-        return $this->belongsTo('App\Work');
+        return $this->belongsTo('App\Work')->withDefault([
+            'name' => 'N/A'
+        ]);;
+    }
+    // Getting the Current User Profile Id
+    // TODO Need to optimize
+    public static function getCurrentUserProfileId() 
+    {
+        $currentuserProfile = Profile::where('user_id', Auth::user()->id)->first();
+        
+        return $currentuserProfile->id;
+    }
+
+    // Getting the profile Id for secret_id
+
+    public static function getProfileIdForSecretId($secretId)
+    {
+        $currentuserProfile = Profile::where('secret_id', $secretId)->first();
+        
+        return $currentuserProfile->id;
     }
 }

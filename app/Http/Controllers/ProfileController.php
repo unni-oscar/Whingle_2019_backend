@@ -25,6 +25,11 @@ class ProfileController extends Controller
     {
         $user = User::find(Auth::user()->id); 
         $profile = $user->profile;
+        $profile['address'] = $user->profile['address'];
+        $contact =  array(
+            'number' => $user->profile['contact_number'],
+            'address' => $user->profile['address']
+        );
         $keyArr = array('created_by', 'gender', 'marital', 'yesNo', 'diet', 'drink', 'smoke', 'father','mother',
         'horoscope', 'manglik', 'star', 'moon_sign', 'family_type', 'family_values', 'family_status',
         'bro_sis', 'job_category', 'education_category', 'income', 'height', 'weight', 'build', 'complexion', 'blood_group');
@@ -34,7 +39,7 @@ class ProfileController extends Controller
         $jobs = Work::select('id', 'name')->orderBy('name', 'asc')->get();
         $religions = Religion::select('id', 'name')->orderBy('name', 'asc')->get(); 
         $motherTongues = MotherTongue::select('id', 'name')->orderBy('name', 'asc')->get();  
-        return response()->json(compact('profile', 'countries',  'whData', 'motherTongues', 'religions', 'jobs'));
+        return response()->json(compact('profile', 'countries',  'whData', 'motherTongues', 'religions', 'jobs', 'contact'));
     }
 
     /**
@@ -119,4 +124,6 @@ class ProfileController extends Controller
     {
         //
     }
+
+    
 }

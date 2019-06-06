@@ -46,5 +46,9 @@ Route::group([
     Route::post('search', 'SearchController@filter');
 
     Route::get('show/{secret_id}', 'ProfileController@show');
+    
+    Route::post('sendMessage', 'MessageController@send');
+    Route::get('isPaidSub', 'AuthController@isPaidSub');
+
 
 });

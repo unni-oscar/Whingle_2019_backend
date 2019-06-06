@@ -41,6 +41,12 @@ return [
     'change_password' => 'Password changed successfully',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
-    'operation_invalid' => 'Invalid operation found'
+    'operation_invalid' => 'Invalid operation found',
+
+    'send-msg-success' => 'Message has been sent successfully.',
+    'send-msg-error' => 'Could not send message. Please try again.',
+
+    'error' => 'error',
+    'success' => 'success'
 
 ];
