@@ -48,7 +48,7 @@ Route::group([
     Route::get('show/{secret_id}', 'ProfileController@show');
     
     Route::post('sendMessage', 'MessageController@send');
-    Route::get('isPaidSub', 'AuthController@isPaidSub');
+    Route::post('hasMsgPermission', 'AuthController@hasMsgPermission');
 
 
 });

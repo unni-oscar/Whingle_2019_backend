@@ -15,6 +15,7 @@ use App\Jobs\UserVerificationJob;
 use App\Jobs\ResetPasswordJob;
 use App\Jobs\ChangePasswordJob;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Blacklist;
 
 class AuthController extends Controller
 {    
@@ -196,16 +197,21 @@ class AuthController extends Controller
         ]);
     }
     /**
-     * Checking if current user has paid membership
+     * Checking if current user has paid membership / not in shortlist
      */
-    public function isPaidSub()
+    public function hasMsgPermission(Request $request)
     {
+        // Checking if the user has paid subscription
         $user = User::find(Auth::user()->id);
         $data = (0 == $user->subscription_id) ? false : true; 
-            
+        // Checking if the user is blocked by other user
+        $userProfileId = Profile::getProfileIdForSecretId($request->id);
+        $currentUserProfileId = Profile::getCurrentUserProfileId();  
+        $isBlacklisted = Blacklist::isBlacklisted($currentUserProfileId, $userProfileId);
         return response([
             'status' => 'success',
-            'value' => $data
+            'paid' => $data,
+            'blacklist' => $isBlacklisted
         ]);
     }
     /**
