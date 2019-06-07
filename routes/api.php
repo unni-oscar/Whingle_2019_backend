@@ -48,6 +48,7 @@ Route::group([
     Route::get('show/{secret_id}', 'ProfileController@show');
     
     Route::post('sendMessage', 'MessageController@send');
+    Route::post('sendInterest', 'InterestController@send');
     Route::post('hasMsgPermission', 'AuthController@hasMsgPermission');
 
 

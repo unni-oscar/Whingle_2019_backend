@@ -3,28 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Interest;
 use App\Profile;
-use App\Message;
 use Illuminate\Support\Facades\DB;
 
-class MessageController extends Controller
+
+class InterestController extends Controller
 {
     public function send(Request $request) {        
         // TODO: Need to optimise only to get the require field and not other fields
         $userProfileId = Profile::getProfileIdForSecretId($request->id);
         $currentUserProfileId = Profile::getCurrentUserProfileId();       
         
+        if($request->check) {
+            $InterestExist = Interest::where(array(
+                'interest_from' => $currentUserProfileId,
+                'interest_to' => $userProfileId
+            ))->first();
+            
+            if($InterestExist) {
+                return response([
+                    'status' => __('messages.success'),
+                    'exists' =>  true
+                ], 200);
+            }
+        }
+        
         try{       
             DB::beginTransaction();
-            $message = new Message;
-            $message->message_from = $currentUserProfileId;
-            $message->message_to = $userProfileId;
-            $message->message = $request->message;
-            
-            $message->status = Message::UNREAD;
-            $message->save();
+            $interest = new Interest();
+            $interest->interest_from = $currentUserProfileId;
+            $interest->interest_to = $userProfileId;
+            $interest->status = Interest::UNREAD;
+            $interest->save();
             DB::commit();
             
             // TODO : Send email notificatoin
@@ -33,13 +44,13 @@ class MessageController extends Controller
              
             return response([
                 'status' => __('messages.success'),
-                'message' =>  __('messages.send-msg-success')
+                'message' =>  __('messages.send-interest-success')
             ], 201);
         } catch(\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => __('messages.error'),
-                'message' =>  __('messages.send-msg-error'), //$e->getMessage() //
+                'message' =>  __('messages.send-interest-error'), //$e->getMessage() //
             ], 422);
         }
         

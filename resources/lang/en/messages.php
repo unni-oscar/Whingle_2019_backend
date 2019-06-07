@@ -46,6 +46,9 @@ return [
     'send-msg-success' => 'Message has been sent successfully.',
     'send-msg-error' => 'Could not send message. Please try again.',
 
+    'send-interest-success' => 'You interest has been sent successfully.',
+    'send-interest-error' => 'Could not send interest. Please try again.',
+
     'error' => 'error',
     'success' => 'success'
 
