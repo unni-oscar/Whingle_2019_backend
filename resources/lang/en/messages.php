@@ -41,7 +41,7 @@ return [
     'change_password' => 'Password changed successfully',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
-    'operation_invalid' => 'Invalid operation found',
+    'operation_invalid' => 'Invalid operation found.',
 
     'send-msg-success' => 'Message has been sent successfully.',
     'send-msg-error' => 'Could not send message. Please try again.',
@@ -49,9 +49,13 @@ return [
     'send-interest-success' => 'You interest has been sent successfully.',
     'send-interest-error' => 'Could not send interest. Please try again.',
 
-    'add-favourite-exists' => 'This profile is already in your favourites',
-    'add-favourite-success' => 'Profile added to favourites successfully',
-    'add-favourite-error' => 'Could not add to favourites. Please try again',
+    'add-favourite-exists' => 'This profile is already in your favourites.',
+    'add-favourite-success' => 'Profile added to favourites successfully.',
+    'add-favourite-error' => 'Could not add to favourites. Please try again.',
+
+    'send-request-exists' => 'You have already sent a request.',
+    'send-request-success' => 'Your request has been sent successfully. ',
+    'send-request-error' => 'Could not send request. Please try again.',
 
     'error' => 'error',
     'success' => 'success',
