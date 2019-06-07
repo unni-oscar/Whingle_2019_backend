@@ -50,6 +50,9 @@ Route::group([
     Route::post('sendMessage', 'MessageController@send');
     Route::post('sendInterest', 'InterestController@send');
     Route::post('hasMsgPermission', 'AuthController@hasMsgPermission');
+    Route::post('addToFavourite', 'FavouriteController@add');
+
+    
 
 
 });
