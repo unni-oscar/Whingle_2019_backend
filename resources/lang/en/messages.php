@@ -49,7 +49,12 @@ return [
     'send-interest-success' => 'You interest has been sent successfully.',
     'send-interest-error' => 'Could not send interest. Please try again.',
 
+    'add-favourite-exists' => 'This profile is already in your favourites',
+    'add-favourite-success' => 'Profile added to favourites successfully',
+    'add-favourite-error' => 'Could not add to favourites. Please try again',
+
     'error' => 'error',
-    'success' => 'success'
+    'success' => 'success',
+    'info' => 'Information'
 
 ];
