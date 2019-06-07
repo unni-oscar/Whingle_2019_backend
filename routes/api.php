@@ -51,6 +51,9 @@ Route::group([
     Route::post('sendInterest', 'InterestController@send');
     Route::post('hasMsgPermission', 'AuthController@hasMsgPermission');
     Route::post('addToFavourite', 'FavouriteController@add');
+    Route::post('sendRequest', 'ProfileRequestController@send');
+
+    
 
     
 
