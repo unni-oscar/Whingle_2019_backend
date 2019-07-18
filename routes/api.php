@@ -56,7 +56,7 @@ Route::group([
     Route::post('getInterestsSent', 'InterestController@interestSent');
     Route::post('replyInterest', 'InterestController@replyInterest');
     
-      
+    Route::post('getFavourites', 'FavouriteController@getFavourites');
 
 
 });

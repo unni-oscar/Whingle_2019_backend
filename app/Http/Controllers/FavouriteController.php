@@ -10,6 +10,21 @@ use Illuminate\Support\Facades\DB;
 
 class FavouriteController extends Controller
 {
+    public function getFavourites(Request $request) {
+        $currentUserProfileId = Profile::getCurrentUserProfileId(); 
+        $columns = ['created_at', 'updated_at'];
+        $length = $request->length;
+        $column = $request->column; 
+        $dir = $request->dir;
+      
+        $Interests = Favourite::where(array(
+            'favourite_from' => $currentUserProfileId
+        ))->orderBy($columns[$column], $dir)->with('profileTo.country','profileTo.state', 'profileTo.city');
+
+        $data = $Interests->paginate($length);
+        return ['data' => $data, 'draw' => $request->input('draw')  ];
+    }
+
     public function add(Request $request) {        
         // TODO: Need to optimise only to get the require field and not other fields
         $userProfileId = Profile::getProfileIdForSecretId($request->id);
