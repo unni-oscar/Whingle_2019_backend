@@ -52,10 +52,11 @@ Route::group([
     Route::post('hasMsgPermission', 'AuthController@hasMsgPermission');
     Route::post('addToFavourite', 'FavouriteController@add');
     Route::post('sendRequest', 'ProfileRequestController@send');
-
+    Route::post('getInterestsReceived', 'InterestController@interestReceived');
+    Route::post('getInterestsSent', 'InterestController@interestSent');
+    Route::post('replyInterest', 'InterestController@replyInterest');
     
-
-    
+      
 
 
 });

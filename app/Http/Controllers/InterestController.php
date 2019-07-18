@@ -10,6 +10,54 @@ use Illuminate\Support\Facades\DB;
 
 class InterestController extends Controller
 {
+    public function interestReceived (Request $request) {
+        $currentUserProfileId = Profile::getCurrentUserProfileId(); 
+        $columns = ['created_at', 'updated_at'];
+        $length = $request->length;
+        $column = $request->column; 
+        $dir = $request->dir;
+      
+        $Interests = Interest::where(array(
+            'interest_to' => $currentUserProfileId
+        ))->orderBy($columns[$column], $dir)->with('profileFrom.country','profileFrom.state', 'profileFrom.city');
+
+        $data = $Interests->paginate($length);
+        return ['data' => $data, 'draw' => $request->input('draw')  ];
+    }
+
+    public function replyInterest(Request $request) {
+        $currentUserProfileId = Profile::getCurrentUserProfileId(); 
+        $status = ($request->action) ? Interest::ACCEPT : Interest::REJECT;
+        //Checking if he/she is the owner of the interest as he/she is able to modify only interest received
+        $ownInterest = Interest::where(array(
+            'interest_to' => $currentUserProfileId,
+            'id' => $request->id
+        ))->first();
+        if($ownInterest) {
+            Interest::where('id', $request->id)->update(
+                ['status' => $status]
+            );
+        } else {
+
+        }
+    }
+    
+    public function interestSent (Request $request) {
+        $currentUserProfileId = Profile::getCurrentUserProfileId(); 
+        $columns = ['created_at', 'updated_at'];
+        $length = $request->length;
+        $column = $request->column; 
+        $dir = $request->dir;
+      
+        $Interests = Interest::where(array(
+            'interest_from' => $currentUserProfileId
+        ))->orderBy($columns[$column], $dir)->with('profileTo.country','profileTo.state', 'profileTo.city');
+
+        $data = $Interests->paginate($length);
+        return ['data' => $data, 'draw' => $request->input('draw')  ];
+    }
+
+
     public function send(Request $request) {        
         // TODO: Need to optimise only to get the require field and not other fields
         $userProfileId = Profile::getProfileIdForSecretId($request->id);
