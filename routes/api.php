@@ -57,6 +57,8 @@ Route::group([
     Route::post('replyInterest', 'InterestController@replyInterest');
     
     Route::post('getFavourites', 'FavouriteController@getFavourites');
+    Route::post('removeFromFav', 'FavouriteController@remove');
+
 
 
 });

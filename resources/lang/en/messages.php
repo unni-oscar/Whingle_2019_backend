@@ -52,13 +52,15 @@ return [
     'add-favourite-exists' => 'This profile is already in your favourites.',
     'add-favourite-success' => 'Profile added to favourites successfully.',
     'add-favourite-error' => 'Could not add to favourites. Please try again.',
+    'remove-favourite-success' => 'Profile has been removed from favourites successfully',
+    'remove-favourite-error' => 'Could not remove from favourites. Please try again.',
 
     'send-request-exists' => 'You have already sent a request.',
     'send-request-success' => 'Your request has been sent successfully. ',
     'send-request-error' => 'Could not send request. Please try again.',
 
-    'error' => 'error',
-    'success' => 'success',
+    'error' => 'Error',
+    'success' => 'Success',
     'info' => 'Information'
 
 ];
