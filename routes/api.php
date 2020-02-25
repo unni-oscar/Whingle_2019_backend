@@ -59,6 +59,8 @@ Route::group([
     Route::post('getFavourites', 'FavouriteController@getFavourites');
     Route::post('removeFromFav', 'FavouriteController@remove');
 
+    Route::post('getRequestsReceived', 'ProfileRequestController@requestReceived');
+    Route::post('getRequestsSent', 'ProfileRequestController@requestSent');
 
 
 });

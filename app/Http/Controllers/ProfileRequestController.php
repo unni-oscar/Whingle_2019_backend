@@ -10,6 +10,37 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileRequestController extends Controller
 {
+    public function requestReceived (Request $request) {
+        $currentUserProfileId = Profile::getCurrentUserProfileId(); 
+        $columns = ['created_at', 'updated_at'];
+        $length = $request->length;
+        $column = $request->column; 
+        $dir = $request->dir;
+      
+        $Requests = ProfileRequest::where(array(
+            'to' => $currentUserProfileId
+        ))->orderBy($columns[$column], $dir)->with('profileFrom.country','profileFrom.state', 'profileFrom.city');
+
+        $data = $Requests->paginate($length);
+        return ['data' => $data, 'draw' => $request->input('draw')  ];
+    }    
+    
+    public function requestSent (Request $request) {
+        $currentUserProfileId = Profile::getCurrentUserProfileId(); 
+        $columns = ['created_at', 'updated_at'];
+        $length = $request->length;
+        $column = $request->column; 
+        $dir = $request->dir;
+      
+        $Requests = ProfileRequest::where(array(
+            'from' => $currentUserProfileId
+        ))->orderBy($columns[$column], $dir)->with('profileTo.country','profileTo.state', 'profileTo.city');
+
+        $data = $Requests->paginate($length);
+        return ['data' => $data, 'draw' => $request->input('draw')  ];
+    }
+
+
     public function send(Request $request) {        
         // TODO: Need to optimise only to get the require field and not other fields
         $userProfileId = Profile::getProfileIdForSecretId($request->id);
