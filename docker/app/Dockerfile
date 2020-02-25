@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libpng-dev \
     build-essential \
-    mysql-client \
+    mysql-client-* \
     zip \    
     vim \
     unzip \
